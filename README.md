@@ -56,13 +56,13 @@ cargo run -p rustai-ping  -- once
 
 ## 새 도메인 추가
 
-**자동 (권장)**:
+**자동 (권장)** — CLI 서브커맨드:
 ```bash
-scripts/new-domain.sh <name> "설명"
-# 예: scripts/new-domain.sh wave "파동 도메인"
+cargo run -p rustai -- scaffold new-domain <name> -d "설명"
+# 예: cargo run -p rustai -- scaffold new-domain wave -d "파동 도메인"
 ```
-이 스크립트는 스캐폴딩 후 즉시 `nickel eval` + `cargo check`로 검증하고,
-실패 시 생성된 파일 전부 롤백합니다.
+내부적으로 스캐폴딩 → `nickel eval` → `cargo check` 순서로 검증하고
+어느 단계든 실패하면 생성 파일 전부 **롤백**합니다.
 
 **수동**:
 ```
@@ -85,13 +85,13 @@ cargo generate dalsoop/rust-ai-generate-template --name my-app
 ```
 Handlebars 변수(`{{project-name}}`, `{{crate_name}}`)로 자동 치환됨.
 
-**Fallback** (cargo-generate 미설치):
+**Fallback** (cargo-generate 미설치) — CLI 서브커맨드:
 ```bash
 # dry-run (어느 파일이 바뀔지 미리 보기)
-scripts/rename-template.sh my-app
+cargo run -p rustai -- scaffold rename my-app
 
 # 실제 적용
-scripts/rename-template.sh my-app --apply
+cargo run -p rustai -- scaffold rename my-app --apply
 cargo check --workspace
 ```
 
