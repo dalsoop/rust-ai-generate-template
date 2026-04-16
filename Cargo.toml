@@ -9,6 +9,7 @@ members = [
 [workspace.package]
 version = "0.1.0"
 edition = "2024"
+rust-version = "1.85"
 authors = ["dalsoop"]
 license = "MIT"
 repository = "https://github.com/dalsoop/rust-ai-generate-template"

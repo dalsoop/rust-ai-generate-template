@@ -13,4 +13,4 @@ rustai-core = { workspace = true }
 anyhow = { workspace = true }
 
 [build-dependencies]
-hardcoded-lint = { git = "https://github.com/dalsoop/hardcoded-lint" }
+hardcoded-lint = { git = "https://github.com/dalsoop/hardcoded-lint", rev = "c943f1f" }

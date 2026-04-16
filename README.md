@@ -94,6 +94,31 @@ git push
 ✗ nickel eval 실패: missing definition for `name`
 ```
 
+## Cargo.lock 정책
+
+이 템플릿은 **바이너리 전용 workspace**라 `Cargo.lock`을 **커밋합니다**.
+이유:
+- `hardcoded-lint`가 git 의존성 (`rev` SHA pin) — lock 없으면 사용자마다 첫 빌드가 달라져
+  템플릿이 "검증한 fail-closed 게이트"가 아닌 "복제 날짜가 고른 그래프"가 됨.
+- Cargo 공식 FAQ의 바이너리 권고와 일치.
+
+템플릿에서 시작한 프로젝트를 **라이브러리로 전환**하려면:
+```bash
+echo "Cargo.lock" >> .gitignore && git rm --cached Cargo.lock
+```
+
+## 업스트림 템플릿 업데이트 흡수하기
+
+이 템플릿이 발전하면 파생 프로젝트가 수동으로 cherry-pick:
+```bash
+git remote add template https://github.com/dalsoop/rust-ai-generate-template
+git fetch template
+git log template/main --oneline -10       # 최근 변경사항 훑기
+git cherry-pick <sha>                      # 관심 있는 커밋만
+```
+공통 파일(`.githooks/*`, `scripts/pre-commit-no-hardcode.sh`, `crates/core/build.rs`)은
+거의 그대로 가져올 수 있음.
+
 ## 라이선스
 
-MIT
+MIT — [LICENSE](LICENSE)
