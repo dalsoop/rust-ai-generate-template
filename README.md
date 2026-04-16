@@ -56,17 +56,44 @@ cargo run -p rustai-ping  -- once
 
 ## 새 도메인 추가
 
+**자동 (권장)**:
+```bash
+scripts/new-domain.sh <name> "설명"
+# 예: scripts/new-domain.sh wave "파동 도메인"
+```
+이 스크립트는 스캐폴딩 후 즉시 `nickel eval` + `cargo check`로 검증하고,
+실패 시 생성된 파일 전부 롤백합니다.
+
+**수동**:
 ```
 crates/domains/<name>/
 ├── Cargo.toml
 ├── build.rs                # hardcoded_lint 호출
-├── domain.ncl              # | Domain 계약 어노테이션
+├── domain.ncl              # | Domain 계약 어노테이션 필수
 └── src/main.rs
 ```
-
 그리고 `ncl/domains.ncl`의 `domains = { ... }`에 엔트리 추가.
 
 자세한 규칙은 [`AGENTS.md`](AGENTS.md).
+
+## 템플릿에서 실제 프로젝트로 rename
+
+**권장**: [cargo-generate](https://github.com/cargo-generate/cargo-generate)
+```bash
+cargo install cargo-generate
+cargo generate dalsoop/rust-ai-generate-template --name my-app
+```
+Handlebars 변수(`{{project-name}}`, `{{crate_name}}`)로 자동 치환됨.
+
+**Fallback** (cargo-generate 미설치):
+```bash
+# dry-run (어느 파일이 바뀔지 미리 보기)
+scripts/rename-template.sh my-app
+
+# 실제 적용
+scripts/rename-template.sh my-app --apply
+cargo check --workspace
+```
 
 ## 실패 실증
 
